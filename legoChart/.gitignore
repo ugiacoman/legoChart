@@ -1,0 +1,15 @@
+/.idea
+/.DS_Store
+/*.iml
+/.tmp/
+/bower_components/
+/node_modules/
+/gh-pages/
+/docs/_build/
+/site/
+/coverage-results/
+/assets/*.map
+/assets/*.min.*
+*.log
+/.bowerrc
+/assets/*.min.*
