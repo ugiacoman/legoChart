@@ -46502,6 +46502,7 @@ Github: https://github.com/angular-gantt/angular-gantt.git
             
 			if (content === undefined && $scope.column === 'cost') {
                 content = $scope.row.model.content;
+				//Above grabs cost row contents
             }
 			if (content === undefined && $scope.column === 'cost') {
                 content = $scope.row.rowsManager.gantt.options.value('rowContent');
@@ -47010,7 +47011,7 @@ Github: https://github.com/angular-gantt/angular-gantt.git
 
             var content = $scope.row.rowsManager.gantt.options.value('rowContent');
             if (content === undefined) {
-                content = '{{row.model.name}}';
+                content = '{{row.cost}}';
             }
             return content;
         };
