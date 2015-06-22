@@ -46499,8 +46499,16 @@ Github: https://github.com/angular-gantt/angular-gantt.git
             if (content === undefined && $scope.pluginScope.content !== undefined) {
                 content = $scope.pluginScope.content;
             }
-            if (content === undefined) {
+            
+			if (content === undefined && $scope.column === 'cost') {
+                content = $scope.row.model.content;
+            }
+			if (content === undefined && $scope.column === 'cost') {
+                content = $scope.row.rowsManager.gantt.options.value('rowContent');
+            }
+			if (content === undefined) {
                 return '{{getValue()}}';
+				//Row content get value error
             }
             return content;
         };
