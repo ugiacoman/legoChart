@@ -41351,7 +41351,6 @@ Github: https://github.com/angular-gantt/angular-gantt.git
     }]);
 }());
 
-
 (function() {
     'use strict';
     angular.module('gantt').factory('Gantt', [
@@ -41377,6 +41376,8 @@ Github: https://github.com/angular-gantt/angular-gantt.git
                     'currentDateValue': moment,
                     'autoExpand': 'none',
                     'taskOutOfRange': 'truncate',
+                    //change to row or task row.model.cost  '{{row.model.tasks}}'
+                    'costContent': '{{row.model.tasks[0].cost}}',
                     'taskContent': '{{task.model.name}}',
                     'rowContent': '{{row.model.name}}',
                     'maxHeight': 0,
@@ -46500,21 +46501,28 @@ Github: https://github.com/angular-gantt/angular-gantt.git
                 content = $scope.pluginScope.content;
             }
             
-			if (content === undefined && $scope.column === 'cost') {
+			// cost change content
+      if (content === undefined && $scope.column === 'cost') {
                 content = $scope.row.model.content;
             }
-			if (content === undefined && $scope.column === 'cost') {
-                content = $scope.row.rowsManager.gantt.options.value('rowContent');
+			// cost change content
+      if (content === undefined && $scope.column === 'cost') {
+                content = $scope.row.rowsManager.gantt.options.value('costContent');
             }
-			if (content === undefined) {
-                return '{{getValue()}}';
-				//Row content get value error
+      			if (content === undefined) {
+                      return '{{getValue()}}';
+      				//Row content get value error
             }
             return content;
         };
     }]);
 }());
 
+function estimateCost(begin, end){
+
+
+  return $scope.task.model.from;
+}
 
 (function() {
     'use strict';
