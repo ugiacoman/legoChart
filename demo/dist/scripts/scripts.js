@@ -79,7 +79,7 @@ angular.module('angularGanttDemoApp')
             toDate: undefined,
             costContent: '<i class="fa fa-align-justify"></i> {{row.model.from}}',
             rowContent: '<i class="fa fa-align-justify"></i> {{row.model.name}}',
-			// costContent: '<i class="fa fa-usd"></i> {{row.model.cost}}',
+			costContent: '<i class="fa fa-usd"></i> {{row.model.cost}}',
             taskContent : '<i class="fa fa-tasks"></i> {{task.model.name}}',
             allowSideResizing: true,
             labelsEnabled: true,
@@ -438,6 +438,13 @@ angular.module('angularGanttDemoApp')
 
     }]);
 
+	
+		var duration = function(startDate, endDate) {
+			var d = Math.abs(startDate, endDate) ;
+		return d;
+			}
+	
+	
 'use strict';
 
 /**
@@ -451,46 +458,87 @@ angular.module('angularGanttDemoApp')
     .service('Sample', function Sample() {
         return {
             getSampleData: function() {
+				
                 return [
                         // Order is optional. If not specified it will be assigned automatically
                         {name: 'All Systems', height: '3em', sortable: false, classes: 'gantt-row-milestone', color: '#45607D', tasks: [
                             // Dates can be specified as string, timestamp or javascript date object. The data attribute can be used to attach a custom object
-                            {name: 'JIFMS', color: '#93C47D', from: '2013-10-07T09:00:00', to: '2013-10-07T10:00:00', cost: 'calcTotal'},
-                            {name: 'CCAM', color: '#93C47D', from: new Date(2015, 9, 18, 18, 0, 0), to: new Date(2013, 9, 18, 18, 0, 0), est: new Date(2013, 9, 16, 7, 0, 0), lct: new Date(2013, 9, 19, 0, 0, 0)},
-                            {name: 'Ulises Project', color: '#93C47D', from: new Date(2013, 9, 18, 18, 0, 0), to: new Date(2013, 9, 18, 18, 0, 0), est: new Date(2013, 9, 16, 7, 0, 0), lct: new Date(2013, 9, 19, 0, 0, 0)},
-                            {name: 'Jordan Is Awesome', color: '#93C47D', from: new Date(2013, 9, 18, 18, 0, 0), to: new Date(2013, 9, 18, 18, 0, 0), est: new Date(2013, 9, 16, 7, 0, 0), lct: new Date(2013, 9, 19, 0, 0, 0)},
+                            {name: 'JIFMS', 
+							color: '#93C47D', 
+							from: '2013-10-07T09:00:00', 
+							to: '2013-10-07T10:00:00', 
+							cost: 'calcTotal'
+							},
+							
+                            {name: 'CCAM', 
+							color: '#93C47D', 
+							from: new Date(2015, 9, 18, 18, 0, 0), 
+							to: new Date(2013, 9, 18, 18, 0, 0), 
+							est: new Date(2013, 9, 16, 7, 0, 0), 
+							lct: new Date(2013, 9, 19, 0, 0, 0)
+							},
+							
+                            {name: 'Ulises Project', 
+							color: '#93C47D', 
+							from: new Date(2013, 9, 18, 18, 0, 0), 
+							to: new Date(2013, 9, 18, 18, 0, 0), 
+							est: new Date(2013, 9, 16, 7, 0, 0), 
+							lct: new Date(2013, 9, 19, 0, 0, 0)
+							},
+							
+                            {name: 'Jordan Is Awesome', 
+							color: '#93C47D', 
+							from: new Date(2013, 9, 18, 18, 0, 0), 
+							to: new Date(2013, 9, 18, 18, 0, 0), 
+							est: new Date(2013, 9, 16, 7, 0, 0), 
+							lct: new Date(2013, 9, 19, 0, 0, 0)
+							},
 
                         ], 
-						//data: 'TEST'},
-						// {name: 'JIFMS', height: '3em', sortable: false, classes: 'gantt-row-milestone', color: '#45607D', tasks: [
-                            //Dates can be specified as string, timestamp or javascript date object. The data attribute can be used to attach a custom object
-                            // {name: 'JIFMS', color: '#93C47D', from: '2013-10-07T09:00:00', to: '2013-10-07T10:00:00', data: 'Can contain any custom data or object'},
-                            // {name: 'CCAM', color: '#93C47D', from: new Date(2013, 9, 18, 18, 0, 0), to: new Date(2013, 9, 18, 18, 0, 0), est: new Date(2013, 9, 16, 7, 0, 0), lct: new Date(2013, 9, 19, 0, 0, 0)},
-                           
-                        // ], 
 						
-						// data: 'TEST'},
-						// {name: 'Hello', height: '3em', sortable: false, classes: 'gantt-row-milestone', color: '#45607D', tasks: [
-                          // Dates can be specified as string, timestamp or javascript date object. The data attribute can be used to attach a custom object
-                            // {name: 'Build', color: '#93C47D', from: '2013-10-07T09:00:00', to: '2013-10-07T10:00:00', data: '$500'},
-                            // {name: 'Produce', color: '#93C47D', from: new Date(2013, 9, 18, 18, 0, 0), to: new Date(2013, 9, 18, 18, 0, 0), est: new Date(2013, 9, 16, 7, 0, 0), lct: new Date(2013, 9, 19, 0, 0, 0)},
-                           
-                        // ], 
 						
 						data: 'Can contain any custom data or object'},
                         {name: 'CCAM', tasks: [
-                            {name: 'Demo #1', color: '#9FC5F8', from: new Date(2013, 9, 25, 15, 0, 0), to: new Date(2013, 9, 25, 18, 30, 0), cost: '523,300'},
+                            {name: 'Demo #1', 
+							color: '#9FC5F8', 
+							from: new Date(2013, 9, 25, 15, 0, 0), 
+							to: new Date(2013, 9, 25, 18, 30, 0), 
+							get cost() {
+							var start = this.from;
+							var end = this.to;
+							var d = duration(start,end);
+							return d;
+								}
+							
+							},
                         ]},
 						{name: 'Fin-Disc', tasks: [
-                            {name: 'Demo #1', color: '#9FC5F8', from: new Date(2013, 9, 25, 15, 0, 0), to: new Date(2013, 9, 25, 18, 30, 0), cost: "22,000"},
+                            {name: 'Demo #1', 
+							color: '#9FC5F8', 
+							from: new Date(2013, 9, 25, 15, 0, 0), 
+							to: new Date(2013, 9, 25, 18, 30, 0), 
+							cost: "22,000"},
                         ]},
                         {name: 'JIFMS', movable: {allowResizing: false}, tasks: [
-                            {name: 'Day 1', color: '#9FC5F8', from: new Date(2013, 9, 7, 9, 0, 0), to: new Date(2013, 9, 7, 17, 0, 0),
-                                progress: {percent: 100, color: '#3C8CF8'}, movable: false,  cost: "12,000,000"},
+                            {name: 'Day 1', 
+							color: '#9FC5F8', 
+							from: new Date(2013, 9, 7, 9, 0, 0), 
+							to: new Date(2013, 9, 7, 17, 0, 0),
+                            progress: {percent: 100, color: '#3C8CF8'}, 
+							movable: false,  
+							cost: "12,000,000"},
                         ]},
-                        {name: 'JETS', movable: {allowResizing: false}, tasks: [
-                            {name: 'Day 1', color: '#9FC5F8', from: new Date(2013, 9, 7, 9, 0, 0), to: new Date(2013, 9, 7, 17, 0, 0),
-                                progress: {percent: 100, color: '#3C8CF8'}, movable: false,  cost: "33,534,000"},
+                        {name: 'JETS', 
+						movable: {allowResizing: false}, 
+						tasks: [
+                            {name: 'Day 1', 
+							color: '#9FC5F8', 
+							from: new Date(2013, 9, 7, 9, 0, 0), 
+							to: new Date(2013, 9, 7, 17, 0, 0),
+                            progress: {percent: 100, color: '#3C8CF8'},
+							movable: false,  
+							cost: "33,534,000"
+},
                         ]},
                         
 			  ];
