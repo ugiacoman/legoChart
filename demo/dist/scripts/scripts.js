@@ -52,7 +52,7 @@ angular.module('angularGanttDemoApp')
             columns: ['model.name', 'from', 'to', 'cost'],
             treeTableColumns: ['from', 'to', 'cost'],
             columnsHeaders: {'model.name' : 'Name', 'from': 'From', 'to': 'To', 'cost': 'Cost'},
-            columnsClasses: {'model.name' : 'gantt-column-name', 'from': 'gantt-column-from', 'to': 'gantt-column-to', 'cost': 'gannt-column-cost'},
+            columnsClasses: {'model.name' : 'gantt-column-name', 'from': 'gantt-column-from', 'to': 'gantt-column-to', 'cost': 'gantt-column-cost'},
             columnsFormatters: {
                 'from': function(from) {
                     return from !== undefined ? from.format('lll') : undefined;
@@ -61,7 +61,7 @@ angular.module('angularGanttDemoApp')
                     return to !== undefined ? to.format('lll') : undefined;
                 },
 				'cost': function(cost) {
-					return to !== undefined ? cost.format('111') : undefined;
+					return cost !== undefined ? cost.format('111') : undefined;
 				},
                
             },
@@ -77,8 +77,9 @@ angular.module('angularGanttDemoApp')
             taskOutOfRange: 'truncate',
             fromDate: moment(null),
             toDate: undefined,
+            costContent: '<i class="fa fa-align-justify"></i> {{row.model.from}}',
             rowContent: '<i class="fa fa-align-justify"></i> {{row.model.name}}',
-			costContent: '<i class="fa fa-usd"></i> {{row.cost}}',
+			// costContent: '<i class="fa fa-usd"></i> {{row.model.cost}}',
             taskContent : '<i class="fa fa-tasks"></i> {{task.model.name}}',
             allowSideResizing: true,
             labelsEnabled: true,
@@ -89,49 +90,15 @@ angular.module('angularGanttDemoApp')
             groupDisplayMode: 'group',
             filterTask: '',
             filterRow: '',
-            timeFrames: {
-                'day': {
-                    start: moment('8:00', 'HH:mm'),
-                    end: moment('20:00', 'HH:mm'),
-                    working: true,
-                    default: true
-                },
-                'noon': {
-                    start: moment('12:00', 'HH:mm'),
-                    end: moment('13:30', 'HH:mm'),
-                    working: false,
-                    default: true
-                },
-                'weekend': {
-                    working: false
-                },
-                'holiday': {
-                    working: false,
-                    color: 'red',
-                    classes: ['gantt-timeframe-holiday']
-                }
-            },
-            dateFrames: {
-                'weekend': {
-                    evaluator: function(date) {
-                        return date.isoWeekday() === 6 || date.isoWeekday() === 7;
-                    },
-                    targets: ['weekend']
-                },
-                '11-november': {
-                    evaluator: function(date) {
-                        return date.month() === 10 && date.date() === 11;
-                    },
-                    targets: ['holiday']
-                }
-            },
             timeFramesNonWorkingMode: 'visible',
             columnMagnet: '15 minutes',
             timeFramesMagnet: true,
+            // canDraw - allows for creating new tasks in chart, to enable take canDraw out.
             canDraw: function(event) {
                 var isLeftMouseButton = event.button === 0 || event.button === 1;
                 return $scope.options.draw && !$scope.options.readOnly && isLeftMouseButton;
             },
+            // drawTaskFactory - helper method of canDraw (configuration for drawing)
             drawTaskFactory: function() {
                 return {
                     id: utils.randomUuid(),  // Unique id of the task.
@@ -488,8 +455,8 @@ angular.module('angularGanttDemoApp')
                         // Order is optional. If not specified it will be assigned automatically
                         {name: 'All Systems', height: '3em', sortable: false, classes: 'gantt-row-milestone', color: '#45607D', tasks: [
                             // Dates can be specified as string, timestamp or javascript date object. The data attribute can be used to attach a custom object
-                            {name: 'JIFMS', color: '#93C47D', from: '2013-10-07T09:00:00', to: '2013-10-07T10:00:00', cost: '500'},
-                            {name: 'CCAM', color: '#93C47D', from: new Date(2013, 9, 18, 18, 0, 0), to: new Date(2013, 9, 18, 18, 0, 0), est: new Date(2013, 9, 16, 7, 0, 0), lct: new Date(2013, 9, 19, 0, 0, 0)},
+                            {name: 'JIFMS', color: '#93C47D', from: '2013-10-07T09:00:00', to: '2013-10-07T10:00:00', cost: 'calcTotal'},
+                            {name: 'CCAM', color: '#93C47D', from: new Date(2015, 9, 18, 18, 0, 0), to: new Date(2013, 9, 18, 18, 0, 0), est: new Date(2013, 9, 16, 7, 0, 0), lct: new Date(2013, 9, 19, 0, 0, 0)},
                             {name: 'Ulises Project', color: '#93C47D', from: new Date(2013, 9, 18, 18, 0, 0), to: new Date(2013, 9, 18, 18, 0, 0), est: new Date(2013, 9, 16, 7, 0, 0), lct: new Date(2013, 9, 19, 0, 0, 0)},
                             {name: 'Jordan Is Awesome', color: '#93C47D', from: new Date(2013, 9, 18, 18, 0, 0), to: new Date(2013, 9, 18, 18, 0, 0), est: new Date(2013, 9, 16, 7, 0, 0), lct: new Date(2013, 9, 19, 0, 0, 0)},
 
@@ -512,30 +479,18 @@ angular.module('angularGanttDemoApp')
 						
 						data: 'Can contain any custom data or object'},
                         {name: 'CCAM', tasks: [
-                            {name: 'Demo #1', color: '#9FC5F8', from: new Date(2013, 9, 25, 15, 0, 0), to: new Date(2013, 9, 25, 18, 30, 0)},
-                            {name: 'Demo #2', color: '#9FC5F8', from: new Date(2013, 10, 1, 15, 0, 0), to: new Date(2013, 10, 1, 18, 0, 0)},
-                            {name: 'Demo #3', color: '#9FC5F8', from: new Date(2013, 10, 8, 15, 0, 0), to: new Date(2013, 10, 8, 18, 0, 0)},
-                            {name: 'Demo #4', color: '#9FC5F8', from: new Date(2013, 10, 15, 15, 0, 0), to: new Date(2013, 10, 15, 18, 0, 0)},
-                            {name: 'Demo #5', color: '#9FC5F8', from: new Date(2013, 10, 24, 9, 0, 0), to: new Date(2013, 10, 24, 10, 0, 0)}
+                            {name: 'Demo #1', color: '#9FC5F8', from: new Date(2013, 9, 25, 15, 0, 0), to: new Date(2013, 9, 25, 18, 30, 0), cost: '523,300'},
                         ]},
-						{name: 'Ulises Project', tasks: [
-                            {name: 'Demo #1', color: '#9FC5F8', from: new Date(2013, 9, 25, 15, 0, 0), to: new Date(2013, 9, 25, 18, 30, 0)},
-                            {name: 'Demo #2', color: '#9FC5F8', from: new Date(2013, 10, 1, 15, 0, 0), to: new Date(2013, 10, 1, 18, 0, 0)},
-                            {name: 'Demo #3', color: '#9FC5F8', from: new Date(2013, 10, 8, 15, 0, 0), to: new Date(2013, 10, 8, 18, 0, 0)},
-                            {name: 'Demo #4', color: '#9FC5F8', from: new Date(2013, 10, 15, 15, 0, 0), to: new Date(2013, 10, 15, 18, 0, 0)},
-                            {name: 'Demo #5', color: '#9FC5F8', from: new Date(2013, 10, 24, 9, 0, 0), to: new Date(2013, 10, 24, 10, 0, 0)}
+						{name: 'Fin-Disc', tasks: [
+                            {name: 'Demo #1', color: '#9FC5F8', from: new Date(2013, 9, 25, 15, 0, 0), to: new Date(2013, 9, 25, 18, 30, 0), cost: "22,000"},
                         ]},
                         {name: 'JIFMS', movable: {allowResizing: false}, tasks: [
                             {name: 'Day 1', color: '#9FC5F8', from: new Date(2013, 9, 7, 9, 0, 0), to: new Date(2013, 9, 7, 17, 0, 0),
-                                progress: {percent: 100, color: '#3C8CF8'}, movable: false},
-                            {name: 'Day 2', color: '#9FC5F8', from: new Date(2013, 9, 8, 9, 0, 0), to: new Date(2013, 9, 8, 17, 0, 0),
-                                progress: {percent: 100, color: '#3C8CF8'}},
-                            {name: 'Day 3', color: '#9FC5F8', from: new Date(2013, 9, 9, 8, 30, 0), to: new Date(2013, 9, 9, 12, 0, 0),
-                                progress: {percent: 100, color: '#3C8CF8'}}
+                                progress: {percent: 100, color: '#3C8CF8'}, movable: false,  cost: "12,000,000"},
                         ]},
-                        {name: 'Jordan Is Awesome', tasks: [
-                            {name: 'Create concept', content: '<i class="fa fa-cog" ng-click="scope.handleTaskIconClick(task.model)"></i> {{task.model.name}}', color: '#F1C232', from: new Date(2013, 9, 10, 8, 0, 0), to: new Date(2013, 9, 16, 18, 0, 0), est: new Date(2013, 9, 8, 8, 0, 0), lct: new Date(2013, 9, 18, 20, 0, 0),
-                                progress: 50}
+                        {name: 'JETS', movable: {allowResizing: false}, tasks: [
+                            {name: 'Day 1', color: '#9FC5F8', from: new Date(2013, 9, 7, 9, 0, 0), to: new Date(2013, 9, 7, 17, 0, 0),
+                                progress: {percent: 100, color: '#3C8CF8'}, movable: false,  cost: "33,534,000"},
                         ]},
                         
 			  ];
